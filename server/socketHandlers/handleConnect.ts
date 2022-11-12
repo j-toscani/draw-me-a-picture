@@ -1,19 +1,17 @@
 import { Server, Socket } from "socket.io";
 import handleDisconnect from "./handleDisconnect";
-import handleMessage from "./handleMessage";
-
-const connected = new Set<string>();
+import handleMessage, { getHistory } from "./handleMessage";
 
 export default function handleConnect(io: Server) {
   return (socket: Socket) => {
-    trackConnected(socket.id);
+    trackConnected(io);
 
-    socket.on("message", handleMessage);
-    socket.on("disconnect", handleDisconnect(connected));
+    socket.emit("history", getHistory());
+    socket.on("message", handleMessage(io, socket));
+    socket.on("disconnect", handleDisconnect);
   };
 }
 
-function trackConnected(id: string) {
-  connected.add(id);
-  console.log(`There are [${connected.size}] users connected.`);
+function trackConnected(io: Server) {
+  console.log(`There are [${io.listeners("message").length}] users connected.`);
 }

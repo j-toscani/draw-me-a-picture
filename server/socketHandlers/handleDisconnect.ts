@@ -1,6 +1,3 @@
-export default function handleDisconnect(connected: Set<string>) {
-  return (id: string) => {
-    connected.delete(id);
-    console.log(`User [${id}] disconnected.`);
-  };
+export default function handleDisconnect(id: string) {
+  console.log(`User [${id}] disconnected.`);
 }
