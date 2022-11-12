@@ -1,6 +1,12 @@
-import {Socket} from "socket.io";
+import {Socket, Server} from "socket.io";
 
-export default function handleConnect(socket: Socket) {
+export default function createSocketIo(server: any) {
+    const io = new Server(server);
+    io.on("connection", handleConnect);
+    return io;
+}
+
+function handleConnect(socket: Socket) {
     console.log("User connected");
 
     socket.on("message", handleMessage);
