@@ -1,32 +1,11 @@
-export function handleMessageInput(socket) {
-  const input = document.querySelector("input");
-  const button = document.querySelector("button");
+import { io } from "https://cdn.socket.io/4.3.2/socket.io.esm.min.js";
+import handleMessageInput from "./handlers/handleMessageInput.js";
+import onMessageAdded from "./handlers/onMessageAdded.js";
+import renderHistory from "./handlers/renderHistory.js";
+import handleCanvasUpload from "./handlers/handleCanvasUpload.js";
 
-  button.addEventListener("click", () => {
-    const value = input.value;
-
-    if (value) {
-      socket.emit("message", value);
-      input.value = "";
-    }
-  });
-}
-
-export function renderHistory(history) {
-  const ul = document.querySelector("ul");
-  history.forEach((message) => {
-    addMessage(ul, message);
-  });
-}
-
-export function onMessageAdded(message) {
-  const ul = document.querySelector("ul");
-  addMessage(ul, message);
-}
-
-function addMessage(ul, message) {
-  const li = document.createElement("li");
-
-  li.textContent = message;
-  ul.append(li);
-}
+const socket = io();
+handleMessageInput(socket);
+socket.on("message-added", onMessageAdded);
+socket.once("history", renderHistory);
+handleCanvasUpload();
