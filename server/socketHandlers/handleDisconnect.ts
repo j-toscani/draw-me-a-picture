@@ -1,3 +1,8 @@
-export default function handleDisconnect(id: string) {
-  console.log(`User [${id}] disconnected.`);
+import { Socket } from "socket.io";
+
+export default function handleDisconnect(socket: Socket, connected: Set<string>) {
+  return () => {
+    connected.delete(socket.id);
+    console.log(`User [${socket.id}] disconnected.`);
+  };
 }
