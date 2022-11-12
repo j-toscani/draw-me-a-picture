@@ -1,28 +1,29 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Document</title>
-        <script type="module">
-            import { io } from "https://cdn.socket.io/4.3.2/socket.io.esm.min.js";
-            const socket = io();
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script type="module">
+      import { io } from "https://cdn.socket.io/4.3.2/socket.io.esm.min.js";
 
-            const input = document.querySelector('input');
-            const button = document.querySelector('button');
+      import {
+        handleMessageInput,
+        onMessageAdded,
+        renderHistory,
+      } from "/index.js";
 
-            button.addEventListener("click", () => {
-                const value = input.value;
-
-                if( value ) {
-                    socket.emit("message", value);
-                    input.value = "";
-                }
-            });
-        </script>
-    </head>
-    <body>
-        <input type="text" name="" id=""> 
-        <button type="submit"> Submit </button>
-    </body>
+      const socket = io();
+      handleMessageInput(socket);
+      socket.on("message-added", onMessageAdded);
+      socket.once("history", renderHistory);
+    </script>
+  </head>
+  <body>
+    <ul class="chat-window"></ul>
+    <div class="input-wrapper">
+      <input type="text" name="" id="" />
+      <button type="submit">Submit</button>
+    </div>
+  </body>
 </html>
