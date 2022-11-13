@@ -13,6 +13,6 @@ export default function handleSender(io) {
             alert("No file was uploaded.");
             return;
         }
-        io.emit("new-background", file)
+        io.emit("create-room", file)
     })
 }
