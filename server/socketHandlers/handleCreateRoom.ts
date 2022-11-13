@@ -1,14 +1,19 @@
 import { Socket } from "socket.io";
-
-const rooms: Map<string, { file: ArrayBuffer; users: Set<string> }> = new Map();
+import { getRooms } from "./handleRooms";
 
 export default function handleCreateRoom(socket: Socket) {
   return (file: ArrayBuffer) => {
-    rooms.set(socket.id, { file, users: new Set<string>().add(socket.id) });
+    getRooms().set(socket.id, {
+      file,
+      users: new Set<string>().add(socket.id),
+      removeSelf: removeSelfAfter(socket.id),
+    });
     socket.emit("move-to-room", socket.id);
   };
 }
 
-export function getRoomState(id: string) {
-  return rooms.get(id);
+function removeSelfAfter(id: string, after = 1000 * 60 * 30) {
+  return setTimeout(() => {
+    getRooms().delete(id);
+  }, after);
 }
