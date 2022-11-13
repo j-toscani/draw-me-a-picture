@@ -9,19 +9,21 @@ export default function handleSender(io) {
     file = event.target.files[0];
   });
 
-  form.addEventListener("submit", (event) => {
-    event.preventDefault();
-    const room = event.target[0].value;
+  form.addEventListener("submit", handleSubmit);
+}
 
-    if (!file) {
-      alert("No file was uploaded.");
-      return;
-    }
+function handleSubmit(event) {
+  event.preventDefault();
+  const room = event.target[0].value;
 
-    if (!event.target.reportValidity()) {
-      return;
-    }
+  if (!file) {
+    alert("No file was uploaded.");
+    return;
+  }
 
-    io.emit("create-room", { file, room });
-  });
+  if (!event.target.reportValidity()) {
+    return;
+  }
+
+  io.emit("create-room", { file, room });
 }
