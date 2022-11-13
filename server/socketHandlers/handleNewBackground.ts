@@ -1,7 +1,7 @@
-import { Server } from "socket.io";
+import { Socket } from "socket.io";
 
-export default function handleNewBackground(io: Server) {
+export default function handleNewBackground(socket: Socket) {
   return (file: File) => {
-    io.emit("update-canvas-img", file);
+    socket.broadcast.emit("update-canvas-img", file);
   };
 }

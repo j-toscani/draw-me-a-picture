@@ -1,4 +1,4 @@
-import handleImageLoad from "./handleImageLoad";
+import handleImageLoad from "./handleImageLoad.js";
 
 export default function handleCanvasImageUpdate(buffer) {
   const bufferView = new Uint8Array(buffer);
