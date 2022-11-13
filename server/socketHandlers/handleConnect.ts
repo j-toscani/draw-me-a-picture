@@ -1,6 +1,7 @@
 import { Server, Socket } from "socket.io";
 import handleDisconnect from "./handleDisconnect";
-import handleNewBackground from "./handleNewBackground";
+import handleCreateRoom from "./handleCreateRoom";
+import handleJoinRoom from "./handleJoinRoom";
 
 const connected = new Set<string>();
 
@@ -9,7 +10,8 @@ export default function handleConnect(io: Server) {
     trackConnected(socket);
 
     socket.on("disconnect", handleDisconnect(socket, connected));
-    socket.on("new-background", handleNewBackground(socket));
+    socket.on("join-room", handleJoinRoom(socket))
+    socket.on("create-room", handleCreateRoom(socket));
   };
 }
 
