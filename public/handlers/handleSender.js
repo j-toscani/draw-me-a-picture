@@ -1,18 +1,27 @@
 let file;
 
 export default function handleSender(io) {
-    const input = document.querySelector('input[type="file"]');
-    const button = document.querySelector("button.sender");
+  const fileInput = document.querySelector('input[type="file"]');
+  const textinput = document.querySelector('input[type="text"]');
+  const form = document.querySelector("form");
 
-    input.addEventListener("change", (event) => {
-        file = event.target.files[0];
-    })
+  fileInput.addEventListener("change", (event) => {
+    file = event.target.files[0];
+  });
 
-    button.addEventListener("click", () => {
-        if (!file) {
-            alert("No file was uploaded.");
-            return;
-        }
-        io.emit("create-room", file)
-    })
+  form.addEventListener("submit", (event) => {
+    event.preventDefault();
+    const room = event.target[0].value;
+
+    if (!file) {
+      alert("No file was uploaded.");
+      return;
+    }
+
+    if (!event.target.reportValidity()) {
+      return;
+    }
+
+    io.emit("create-room", { file, room });
+  });
 }

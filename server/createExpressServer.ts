@@ -1,12 +1,11 @@
 import express from "express";
-import { getRoomState } from "./socketHandlers/handleCreateRoom";
+import { getRoom } from "./socketHandlers/handleRooms";
 
 const router = express.Router();
 
 router.get("/rooms/:id", (req, res) => {
     const {id} = req.params;
-    console.log(id);
-    res.send(getRoomState(id)?.file);
+    res.send(getRoom(id)?.file);
 })
 
 export default function createExpressServer(port = 4000) {
