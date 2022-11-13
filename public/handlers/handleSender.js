@@ -9,21 +9,23 @@ export default function handleSender(io) {
     file = event.target.files[0];
   });
 
-  form.addEventListener("submit", handleSubmit);
+  form.addEventListener("submit", handleSubmit(io));
 }
 
-function handleSubmit(event) {
-  event.preventDefault();
-  const room = event.target[0].value;
+function handleSubmit(io) {
+  return (event) => {
+    event.preventDefault();
+    const room = event.target[0].value;
 
-  if (!file) {
-    alert("No file was uploaded.");
-    return;
-  }
+    if (!file) {
+      alert("No file was uploaded.");
+      return;
+    }
 
-  if (!event.target.reportValidity()) {
-    return;
-  }
+    if (!event.target.reportValidity()) {
+      return;
+    }
 
-  io.emit("create-room", { file, room });
+    io.emit("create-room", { file, room });
+  };
 }
