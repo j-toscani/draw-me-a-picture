@@ -4,6 +4,7 @@ export default function drawAndEmitOnMove(io) {
 
   let active = false;
   let path = [];
+  const getClickPosition = calcClickPosition(canvas);
 
   canvas.addEventListener("mousedown", (event) => {
     active = true;
@@ -49,6 +50,16 @@ function drawTo(ctx, coordinates) {
   ctx.stroke();
 }
 
-function getClickPosition(clickEvent) {
-  return [clickEvent.offsetX, clickEvent.offsetY];
+function calcClickPosition(canvas) {
+  const { width: cWidth, height: cHeight } = canvas;
+  const getSize = () => canvas.getBoundingClientRect();
+
+  return (clickEvent) => {
+    const { width, height } = getSize();
+
+    const xRatio = cWidth / width;
+    const yRatio = cHeight / height;
+
+    return [clickEvent.offsetX * xRatio, clickEvent.offsetY * yRatio];
+  };
 }
