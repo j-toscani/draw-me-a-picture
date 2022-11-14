@@ -2,6 +2,7 @@ import { Server, Socket } from "socket.io";
 import handleDisconnect from "./handleDisconnect";
 import handleCreateRoom from "./handleCreateRoom";
 import handleJoinRoom from "./handleJoinRoom";
+import handleDrewLine from "./handleDrewLine";
 
 const connected = new Set<string>();
 
@@ -12,6 +13,7 @@ export default function handleConnect(io: Server) {
     socket.on("disconnect", handleDisconnect(socket, connected));
     socket.on("join-room", handleJoinRoom(socket))
     socket.on("create-room", handleCreateRoom(socket));
+    socket.on("drew-line", handleDrewLine(socket));
   };
 }
 

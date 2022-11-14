@@ -1,7 +1,6 @@
-export default function drawOnMove() {
+export default function drawAndEmitOnMove(io) {
   const canvas = document.querySelector("canvas");
   const ctx = canvas.getContext("2d");
-  const position = canvas.getBoundingClientRect();
 
   let active = false;
   let path = [];
@@ -9,8 +8,8 @@ export default function drawOnMove() {
   canvas.addEventListener("mousedown", (event) => {
     active = true;
     ctx.beginPath();
-    ctx.moveTo(...calcClickPosition(event));
-    path.push(calcClickPosition(event));
+    ctx.moveTo(...getClickPosition(event));
+    path.push(getClickPosition(event));
   });
 
   canvas.addEventListener("mouseleave", () => {
@@ -19,21 +18,25 @@ export default function drawOnMove() {
 
   canvas.addEventListener("mousemove", (event) => {
     if (!active) return;
-    drawTo(ctx, calcClickPosition(event));
-    path.push(calcClickPosition(event));
+    drawTo(ctx, getClickPosition(event));
+    path.push(getClickPosition(event));
   });
 
   canvas.addEventListener("mouseup", (event) => {
     active = false;
-    drawTo(ctx, calcClickPosition(event));
+    drawTo(ctx, getClickPosition(event));
 
-    path.push(calcClickPosition(event));
+    path.push(getClickPosition(event));
+    io.emit("drew-line", path);
     path = [];
   });
 }
 
-function drawLine(ctx, path) {
+export function drawLine(ctx, path) {
   const start = path[0];
+
+  ctx.beginPath();
+  ctx.moveTo(...start);
 
   for (let index = 1; index < path.length; index++) {
     drawTo(ctx, path[index]);
@@ -46,6 +49,6 @@ function drawTo(ctx, coordinates) {
   ctx.stroke();
 }
 
-function calcClickPosition(clickEvent) {
+function getClickPosition(clickEvent) {
   return [clickEvent.offsetX, clickEvent.offsetY];
 }
