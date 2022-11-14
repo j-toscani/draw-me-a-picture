@@ -1,6 +1,6 @@
-import handleImageLoad from "./handleImageLoad.js";
+import drawImageToCanvas from "./drawImageToCanvas.js";
 
-export default function handleCanvasImageUpdate(buffer) {
+export default function handleCanvasImageUpdate(canvas, buffer) {
   if (!buffer) {
     return;
   }
@@ -10,9 +10,8 @@ export default function handleCanvasImageUpdate(buffer) {
 
   const image = new Image();
   const imageUrl = URL.createObjectURL(blob);
-  const canvas = document.querySelector("canvas");
 
-  image.onload = handleImageLoad(image, canvas);
+  image.onload = () => drawImageToCanvas(image, canvas);
 
   image.src = imageUrl;
 }

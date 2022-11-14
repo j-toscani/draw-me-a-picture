@@ -1,5 +1,4 @@
-export default function drawAndEmitOnMove(io) {
-  const canvas = document.querySelector("canvas");
+export default function drawAndEmitOnMove(io, canvas) {
   const ctx = canvas.getContext("2d");
 
   let active = false;
