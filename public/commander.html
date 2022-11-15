@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css" />
+    <script type="module" src="commander.js"></script>
+  </head>
+  <body>
+    <main>
+      <label for="file"> Upload New Background. </label>
+      <input type="file" name="image" id="file" accept="image/*" />
+      
+      <section>
+        <div class="controls">
+          <select>
+            <option selected value="black"> All </option>
+          </select>
+          <button>Clear</button>
+        </div>
+        <canvas width="600" height="600" id="bg"> </canvas>
+        <canvas width="600" height="600" id="draw"> </canvas>
+        <ul id="users"></ul>
+      </section>
+    </main>
+
+    <template id="display-template">
+      <li>
+        <span class="name"></span>
+        <span class="color"></span>
+      </li>
+    </template>
+  </body>
+</html>
