@@ -4,29 +4,15 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
-    <style>
-      section {
-        display: grid;
-        grid-template-areas: "canvas";
-      }
-      canvas {
-        max-width: 100%;
-        height: auto;
-        grid-area: canvas;
-      }
-      .color {
-        display: inline-block;
-        padding: 2rem;
-      }
-    </style>
+    <link rel="stylesheet" href="style.css">
     <script type="module" src="index.js"></script>
   </head>
   <body>
     <section>
-      <canvas width="800" height="800" id="bg"> </canvas>
-      <canvas width="800" height="800" id="draw"> </canvas>
+      <canvas width="600" height="600" id="bg"> </canvas>
+      <canvas width="600" height="600" id="draw"> </canvas>
+      <ul id="users"></ul>
     </section>
-    <ul id="users"></ul>
 
     <template id="display-template">
       <li>

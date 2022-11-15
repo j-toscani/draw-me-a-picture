@@ -17,6 +17,12 @@ export default function handleConnect(io: Server) {
     socket.on("disconnect", handleDisconnect(socket, io));
     socket.on("drew-line", handleDrewLine(socket))
     socket.on("updateuser", updateUser);
+    socket.on("change-color", (color) => {
+      socket.broadcast.emit("new-line-color", color);
+    })
+    socket.on("clear-canvas", () => {
+      socket.broadcast.emit("clear-draw-canvas")
+    })
     socket.on("updateme", (user: User) => {
       updateUser(user, socket.id);
     });
