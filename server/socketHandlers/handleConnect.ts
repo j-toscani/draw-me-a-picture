@@ -3,10 +3,11 @@ import handleDrewLine from "./handleDrewLine";
 export interface User {
   name: string;
   color: string;
-  isCommander: boolean
+  isCommander: boolean;
 }
 
 const users = new Map<string, User>();
+let file: ArrayBuffer;
 
 export default function handleConnect(io: Server) {
   return (socket: Socket) => {
@@ -15,14 +16,14 @@ export default function handleConnect(io: Server) {
     const updateUser = createUpdateUser(io);
 
     socket.on("disconnect", handleDisconnect(socket, io));
-    socket.on("drew-line", handleDrewLine(socket))
+    socket.on("drew-line", handleDrewLine(socket));
     socket.on("updateuser", updateUser);
-    socket.on("change-color", (color) => {
+    socket.on("change-color", (color: string) => {
       socket.broadcast.emit("new-line-color", color);
-    })
+    });
     socket.on("clear-canvas", () => {
-      socket.broadcast.emit("clear-draw-canvas")
-    })
+      socket.broadcast.emit("clear-draw-canvas");
+    });
     socket.on("updateme", (user: User) => {
       updateUser(user, socket.id);
     });
@@ -30,8 +31,15 @@ export default function handleConnect(io: Server) {
   };
 }
 
+export function getFile() {
+  return file;
+}
+
 function broadcastBgImageData(socket: Socket) {
-  return (data: ArrayBuffer) => socket.broadcast.emit("bgimageupdate", data);
+  return (data: ArrayBuffer) => {
+    file = data;
+    socket.broadcast.emit("bgimageupdate", data);
+  };
 }
 
 function handleDisconnect(socket: Socket, io: Server) {
@@ -44,9 +52,7 @@ function handleDisconnect(socket: Socket, io: Server) {
 
 function trackConnected(socket: Socket) {
   users.set(socket.id, { name: socket.id, color: "#000", isCommander: false });
-  console.log(
-    `There are [${users.size}] users connected.`
-  );
+  console.log(`There are [${users.size}] users connected.`);
 }
 
 function createUpdateUser(io: Server) {

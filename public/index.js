@@ -7,6 +7,11 @@ const bgCanvas = document.querySelector("canvas#bg");
 const drawCanvas = document.querySelector("canvas#draw");
 const ctx = drawCanvas.getContext("2d");
 
+fetch("/bg")
+  .then(async (response) => await response.arrayBuffer())
+  .then((buffer) => handleCanvasImageUpdate(bgCanvas, buffer))
+  .catch((e) => console.error(e));
+
 socket.on("bgimageupdate", (buffer) => {
   handleCanvasImageUpdate(bgCanvas, buffer);
 });
